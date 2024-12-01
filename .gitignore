@@ -1,0 +1,12 @@
+# build artifacts
+/*.exe
+/*.pdb
+/*.o
+# TODO: add output name here
+# LLVM IR
+/*.ll
+/*.S
+# Taskfile checksums
+.task
+/.odin-cache
+*.spall
