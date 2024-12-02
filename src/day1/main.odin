@@ -5,6 +5,8 @@ import "core:time"
 import "core:slice"
 import "core:strings"
 
+import utils ".."
+
 input := #load("input.txt", string)
 input_copy := input
 
@@ -22,9 +24,9 @@ part1 :: proc() {
     pairs := make_soa(#soa[dynamic]Pair, 0, 1000)
 
     for line in strings.split_lines_iterator(&input) {
-        left, len := parse_int(line)
+        left, len := utils.parse_int(line)
         num_spaces :: 3
-        right, _ := parse_int(line[len + num_spaces:]) 
+        right, _ := utils.parse_int(line[len + num_spaces:]) 
         append(&pairs, Pair { left, right })
     }
 
@@ -46,9 +48,9 @@ part2 :: proc() {
     scores := make(map[int]int, 1000)
 
     for line in strings.split_lines_iterator(&input_copy) {
-        left, len := parse_int(line)
+        left, len := utils.parse_int(line)
         num_spaces :: 3
-        right, _ := parse_int(line[len + num_spaces:]) 
+        right, _ := utils.parse_int(line[len + num_spaces:]) 
 
         append(&pairs, Pair { left, right })
         scores[right] += 1
@@ -64,14 +66,4 @@ part2 :: proc() {
         total_score += num * n
     }
     fmt.println("part2:", total_score, time.tick_since(start))
-}
-
-parse_int :: proc(s: string) -> (res, n: int) #no_bounds_check {
-    for n < len(s) {
-        b := s[n]
-        if b < '0' || b > '9' do break
-        res = res * 10 + int(b - '0')
-        n += 1
-    }
-    return
 }

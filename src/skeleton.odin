@@ -22,7 +22,7 @@ main :: proc() {
         defer spall.context_destroy(&g_spall_ctx)
 
         backing_buf := make([]u8, spall.BUFFER_DEFAULT_SIZE)
-        spall.buffer_create(backing_buf, u32(sync.current_thread_id())) or_else panic("spall buf")
+        g_spall_buf = spall.buffer_create(backing_buf, u32(sync.current_thread_id())) or_else panic("spall buf")
         defer spall.buffer_destroy(&g_spall_ctx, &g_spall_buf)
     }
 
@@ -41,6 +41,6 @@ when ODIN_DEBUG {
 
     @(instrumentation_exit)
     spall_exit :: proc "contextless" (proc_addr, callsite_ret_addr: rawptr, loc: runtime.Source_Code_Location) {
-        spall._buffer_end(&gc, &g_spall_buf)
+        spall._buffer_end(&g_spall_ctx, &g_spall_buf)
     }
 }
